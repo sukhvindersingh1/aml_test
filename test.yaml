@@ -4,17 +4,22 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-strategy:
-  matrix:
-    Python310:
-      python.version: '3.10'
-    Python311:
-      python.version: '3.11'
-    Python312:
-      python.version: '3.12'
+stages:
+  -stage:
+   displayName: build
+   pool: ubantu-latest
+   jobs:
+     -job: job_1
+      steps:
+        -script: echo 'i am in job1,step1'
+     -job: job_2
+      steps: 
+        -script: echo 'i am in job2,step1'
 
-steps:
-  - task: UsePythonVersion@0
-    inputs:
-      versionSpec: '$(python.version)'
-    displayName: 'Use Python $(python.version)'
+  -stage: 
+   displayName: deploy
+   jobs: 
+      -job: job_1
+       steps:
+        -script: echo 'i am in job1,step1' 
+    
